@@ -1,6 +1,11 @@
 # Tiphys
 Tiphys – Pilot of [Argonodes](https://github.com/hestiaAI/Argonodes) – Model creation wizard
 
+## How to use?
+**Work in progress!**
+
+https://user-images.githubusercontent.com/5108539/181259354-43471f9f-8aeb-429b-9949-5de98940b427.mp4
+
 ## Setup
 1. `cd /path/to/project`
 2. `python -m venv ./env`
