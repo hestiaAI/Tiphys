@@ -58,7 +58,7 @@
                 <div class="nav flex-column mb-2">
                     <div class="nav-item">
                         <div class="nav-link" href="#">
-                            <input class="form-control form-control-sm" type="text" placeholder="Model's name">
+                            <input class="form-control form-control-sm" type="text" placeholder="Model's name" id="modelname">
                         </div>
                     </div>
                 </div>
@@ -133,11 +133,9 @@
             <!-- Debug -->
             <div class="row">
                 <div class="col-12">
-                    <!-- Button trigger modal -->
-                    <div id="download"></div>
-                    <div>Debug:
-                        <div id="print_output" class="alert alert-danger mt-2" role="alert"></div>
-                    </div>
+<!--                    <div>Debug:-->
+<!--                        <div id="print_output" class="alert alert-danger mt-2" role="alert"></div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </main>
@@ -166,8 +164,8 @@
 
 <!-- Script -->
 <!-- Remove output when not debugging -->
-<py-script src="./static/py/main.py" output="print_output"></py-script>
-<!--<py-script src="./static/py/main.py"></py-script>-->
+<!--<py-script src="./static/py/main.py" output="print_output"></py-script>-->
+<py-script src="./static/py/main.py"></py-script>
 <script src="./static/js/main.js"></script>
 <script src="./static/js/bootstrap/bootstrap.bundle.min.js"></script>
 <script src="https://kit.fontawesome.com/5de44cc6ec.js" crossorigin="anonymous"></script>
