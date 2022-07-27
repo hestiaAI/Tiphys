@@ -91,11 +91,19 @@ async def remove_file(event):
 
 
 async def new_model(event):
+    global MODEL
     if js.confirm("Are you sure you want to create a new Model?\nAll your unsaved modifications will be lost."):
+        for filename in MODEL.traversal:
+            js.removeTree(filename)
         init_model()
         js.showAlert("primary", "New Model created.")
     else:
         return
+
+
+async def change_name(event):
+    global MODEL
+    MODEL.name = event.target.value if event.target.value != "" else "Argonodes Model"
 
 
 async def load_model(event):
@@ -105,15 +113,15 @@ async def load_model(event):
         global MODEL
         fileList = event.target.files.to_py()
         for file in fileList:  # JavaScript File
-            data = await file.read()
-            pyfile = io.BytesIO(data)  # TODO Not working...
+            data = await file.text()
+            # pyfile = io.BytesIO(data.encode())  # TODO Not working...
 
-            if file.mime == "text/csv" or file.name.endswith(".csv"):
-                MODEL.import_from_csv(pyfile)
-            elif file.mime == "application/python-pickle" or file.name.endswith(".pickle"):
-                MODEL.import_from_pickle(pyfile)
-            else:
-                raise AttributeError
+            # if file.mime == "text/csv" or file.name.endswith(".csv"):
+            MODEL.import_from_csv(data)
+            # elif file.mime == "application/python-pickle" or file.name.endswith(".pickle"):
+            #     MODEL.import_from_pickle(pyfile)
+            # else:
+            #     raise AttributeError
 
             js.showAlert("primary", f"Model {0} loaded.")
     else:
@@ -135,13 +143,15 @@ async def save_model(event):
 
 
 async def main():
-    # Create a Python proxy for the callback function
-    # process_file() is your function to process events from FileReader
+    # New tree
     file_event = create_proxy(process_file)
-
-    # Set the listener to the callback
     e = js.document.getElementById("newtree")
     e.addEventListener("change", file_event, False)
+
+    # Model name change
+    name_event = create_proxy(change_name)
+    e = js.document.getElementById("modelname")
+    e.addEventListener("change", name_event, False)
 
     # New Model
     new_event = create_proxy(new_model)
