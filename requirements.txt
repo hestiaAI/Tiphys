@@ -1,0 +1,7 @@
+-e git+ssh://git@github.com/hestiaAI/Argonodes.git#egg=argonodes
+black<=22.7
+flask<=2.2
+isort<=5.11
+pandas<=1.5
+pre-commit<=2.21
+pre-commit-hooks<=4.4
