@@ -16,7 +16,7 @@ jobs:
           persist-credentials: false
       - name: "Download dependencies"
         run: |
-          cd standalone/static/pyscript
+          cd ./standalone/static/pyscript
           wget https://pyscript.net/alpha/pyscript.{css,js,py}
           VERSION='0.20.0'
           TARBALL="pyodide-build-$VERSION.tar.bz2"
@@ -28,4 +28,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
-          FOLDER: ./
+          FOLDER: ./standalone/
