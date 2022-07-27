@@ -49,28 +49,57 @@ def update_table_model():
     TABLE.style.applymap(table_color_cells)
 
 
+# Temp
+from argonodes.parsers import CSVParser, JSONParser, TwitterJSParser, ZIPParser
+
+
+MIME_TO_PARSER = {
+    "text/csv": CSVParser,
+    "application/json": JSONParser,
+    "application/javascript": TwitterJSParser,
+    "application/x-javascript": TwitterJSParser,
+    "application/x-rar-compressed": None,
+    "application/zip": ZIPParser,
+    "application/x-zip-compressed": ZIPParser,
+    "multipart/x-zip": ZIPParser,
+}
+
+
 async def process_file(event):
     global MODEL
     fileList = event.target.files.to_py()
 
     for f in fileList:  # JavaScript File
-        # Get raw data
-        data = await f.text()
+        if f.type in ["application/zip", "application/x-zip-compressed", "multipart/x-zip"]:
+            pass
+        else:
+            try:
+                parser = MIME_TO_PARSER[f.type]()
+            except KeyError:
+                js.showAlert(
+                    "danger",
+                    f"The file {f.name} cannot be parsed.\nFeel free to ask for a new Parser at https://github.com/hestiaAI/Argonodes/issues/new",
+                )
+                return
 
-        # Add a Tree to the model
-        tree = Tree(json.loads(data), filename=f.name)
-        MODEL.add_tree(tree)
+            # Get raw data
+            data = await f.text()
+            jsondata = parser(data)
 
-        # Update table
-        update_table_model()
+            # Add a Tree to the model
+            tree = Tree(jsondata, filename=f.name)
+            MODEL.add_tree(tree)
 
-        # Add a Tree to the list
-        js.addTree(f.name)
+            # Update table
+            update_table_model()
 
-        # Add method to remove
-        remove_event = create_proxy(remove_file)
-        e = js.document.getElementById(f.name)
-        e.addEventListener("click", remove_event, False)
+            # Add a Tree to the list
+            js.addTree(f.name)
+
+            # Add method to remove
+            remove_event = create_proxy(remove_file)
+            e = js.document.getElementById(f.name)
+            e.addEventListener("click", remove_event, False)
 
 
 async def remove_file(event):
